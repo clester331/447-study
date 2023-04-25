@@ -299,4 +299,48 @@
 * Overall shape of the control:                                                 
 ![image](https://user-images.githubusercontent.com/122314614/234148261-2042cdb5-a90d-446d-99f7-fbbd74fa21b1.png)
  
+# Chapter 22 - Performance
 
+## Scientific Noation and SI Prefixes
+* Small numbers ( 0 < x < 1) have negative exponents and large numbers have positive exponents
+* **When you move the decimal point to the left, you add to the exponent**
+* **When you move the decimal point to the right, you subtract from the exponent**     
+![image](https://user-images.githubusercontent.com/122314614/234181689-45375a47-d76c-4f76-9bf9-524bdffc15a4.png)
+* **Do not take things out of scientific notation until the end**
+  * For example, when multiplying, you group the significands together, and add the exponenets of the bases
+  ![image](https://user-images.githubusercontent.com/122314614/234181857-78da8e22-cb0e-4500-bc6e-465173966a2c.png)
+
+* List of SI prefixes:                                                       
+![image](https://user-images.githubusercontent.com/122314614/234181930-4ff45710-1ce3-475d-8554-05320b8fcffd.png)
+* *Engineering notation - A variety of scientific notation where you keep the exponent to a multiple of 3, so it always corresponds to an SI prefix*                                                                       
+![image](https://user-images.githubusercontent.com/122314614/234182090-d4bc13b9-4029-4d6e-b82b-498a1d5621b8.png)
+* *Freuency - Measures how often a periodic, repeating event occurs (Hz)
+  * **Frequency and time are inverses (1 Hz = 1/s)
+
+## Performance
+* *Response Time - the length of time from start to finish*
+  * Make Comparisons using the same task 
+* *Throughput - the amount of work you can do in a span of time*
+  * Make comparisons using the same time 
+* The CPU's job is to run instructions, so we are able to finish instructions faster by:
+  * Doing each instruction faster (reduce latency)
+  * Executing more instructions at once (increase throughput) 
+
+## Real-World Clocking Issues
+* Propogation delay is the time it takes for a signal to pass from the inputs to the inputs
+  * During the delay, the outputs are invalid, but after it, they are valid 
+  * Propogation is never a fixed amount of time, can fluctuate within a range
+* *Race Condition - the data and clock have a race and the outcome will depend on who wins* 
+
+## Determining Maximum Clock Speed
+* *Critical Path - the path through a circuit that requires the longest series of sequential operations*
+  * They depend on each other and cannot be done in parallel 
+* **The fastest we can clock a sequential circuit is the reciprocal of the critical path's propogation delay** 
+
+## Maximum Clock Speed of a Single-Cycle CPU
+* Each component has different propogation delays
+  * **As for memory, it is very slow** 
+* Processor Memory Performance Gap:                                                          
+![image](https://user-images.githubusercontent.com/122314614/234183736-54b1353e-4be6-4858-9e6e-56a8c9839d6d.png)
+* **The absolute fastest a single-cycle machine can run is 66-83 MHz)**
+* **For a single cycle CPU, the clock cannot tick any faster than the instruction with the longest critical path**
