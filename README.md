@@ -263,4 +263,40 @@
 * The interconnect lets the CPU parts combine in many ways (like a circulatory system)
   * **It moves data around**
   
+# Chapter 21 - The Control
+
+## The Control
+* This is a full image of the datapath
+![image](https://user-images.githubusercontent.com/122314614/234144533-2fb934ea-0acf-4c3d-bbc0-2fb4f9acabdc.png)
+* This can do the work of the instructions but it can't read them
+* The control is what automatically sets the control signals to the right values to make each instruction happen
+  * Like the nervous system/brain of the CPU 
+
+## Instruction Execution
+* The five phases of insturction execution
+  * *Fetch (IF or F) - Use PC too get the next instruction from memory (PC FSM/INSTRUCTION MEMORY)*
+  * *Decode (ID or D) - look at the fetched instruction and set control signals (CONTROL)*
+  * *Execute (EX or X) - Wait for data to flow through the ALU (ALU)*
+  * *Memory Access (MEM or M) - If it's a load or store, do that (DATA MEMORY)*
+  * *Write-back (WB or W) - If there's a destination register, write the result to it (REGISTER FILE)*
+![image](https://user-images.githubusercontent.com/122314614/234146766-33012155-963a-4401-9693-d1b524bd6f41.png)
+* *Single cycle machine - Each instruction takes one clock cycle to execute*
+  * **Each instruciton ends on the rising edge of the clock** 
+  * The control must remember which state it is in as well as what the fetched instruction was
+  * A multi-cycle control unit is an FSM
+
+## Single-cycle Control
+* In a single cycle machine, there are three steps
+    1. Split the encoded bitfield into its constituent values
+    2. From the opcode, determine which instruction we're looking at
+    3. map that instruction to a unique combination of control signals
+* **All of these signals happen inside the control unit**
+* **Do everything at once, but only what you need**
+* The control is a boolean function that takes the instruction opcode as its input and outputs the control signals (like a truth table)
+* *Decoder - takes a number and turns on one output. The rest are 0. Used for the opcode*
+* *Priority Encoder - given several 1-bit inputs, it tells you which one is 1
+  * **You must put a constant 1 as the first input** 
+* Overall shape of the control:                                                 
+![image](https://user-images.githubusercontent.com/122314614/234148261-2042cdb5-a90d-446d-99f7-fbbd74fa21b1.png)
+ 
 
