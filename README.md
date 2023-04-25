@@ -296,7 +296,7 @@
 * *Decoder - takes a number and turns on one output. The rest are 0. Used for the opcode*
 * *Priority Encoder - given several 1-bit inputs, it tells you which one is 1
   * **You must put a constant 1 as the first input** 
-* Overall shape of the control:                                                 
+* Overall shape of the control:                                                                                             
 ![image](https://user-images.githubusercontent.com/122314614/234148261-2042cdb5-a90d-446d-99f7-fbbd74fa21b1.png)
  
 # Chapter 22 - Performance
@@ -315,7 +315,7 @@
 * *Engineering notation - A variety of scientific notation where you keep the exponent to a multiple of 3, so it always corresponds to an SI prefix*                                                                       
 ![image](https://user-images.githubusercontent.com/122314614/234182090-d4bc13b9-4029-4d6e-b82b-498a1d5621b8.png)
 * *Freuency - Measures how often a periodic, repeating event occurs (Hz)
-  * **Frequency and time are inverses (1 Hz = 1/s)
+  * **Frequency and time are inverses (1 Hz = 1/s)**
 
 ## Performance
 * *Response Time - the length of time from start to finish*
@@ -344,3 +344,72 @@
 ![image](https://user-images.githubusercontent.com/122314614/234183736-54b1353e-4be6-4858-9e6e-56a8c9839d6d.png)
 * **The absolute fastest a single-cycle machine can run is 66-83 MHz)**
 * **For a single cycle CPU, the clock cannot tick any faster than the instruction with the longest critical path**
+
+# Chapter 23 - Multicycle and Microcode
+
+## Multicycle CPUs
+* Problems with single cycle CPUs:
+  * The clock period cannot be any shorter than the instruction that takes the longest time (Critical Path)
+    * Since memory is so slow, this means that loads and stores are the slowest instructions
+  * We can't run the clock faster than memory latency  
+* If the clock period is only 1 ns, what do we do about memory that takes 11 ns to respond?
+  * Just wait and do nothing for multiple clock cycles  
+![image](https://user-images.githubusercontent.com/122314614/234327111-8aa13ebd-b208-437c-82d1-18b65aea4eac.png)
+* We can split the memory phase accross multiple clock cycles
+  * Send the address to memory in M<sub>1</sub>, do nothing in M<sub>2</sub> through M<sub>11</sub>
+  * The at the end of M<sub>11</sub> the loaded value is finally ready to be used in the W phase 
+* All instructions will not take different numbers of cycles and thus will take different amounts of time
+  * **Now the clock will only tick as slow as the longest phase of any instruction**
+  ![image](https://user-images.githubusercontent.com/122314614/234328892-6ff25983-1b2b-4a0d-9633-0332f59911fb.png)
+* *Pipeline Registers - Hold onto the data for the next phase*
+
+## CPI and Performance Equation
+* *CPI - How many cycles it takes to complete one instruction*
+  * **Lower CPI = faster. Higher CPI = slower**
+  * Best we can do is 1 CPI
+* CPI is just: (number of cycles / number of instructions)
+* Example:
+![image](https://user-images.githubusercontent.com/122314614/234329790-8a9c8c86-af1b-4f6b-850f-d1377ca33c1f.png)
+* The result is the average CPI for this program. Different mixes give different CPIs
+* *Performance equation -  Measures how long it takes to finish running a program*
+![image](https://user-images.githubusercontent.com/122314614/234330021-572415e4-924c-4e21-9e56-35002782578d.png)OR![image](https://user-images.githubusercontent.com/122314614/234330121-a91e15f6-4f64-4721-814b-7692725a6aa8.png)
+
+## Multi-Cycle Control
+* Now with Multi-Cyce, instruction fetch and lw/sw now happen on different cycles, transforming into a Von Neumann architecture
+* In a multi-cycle implementation, control is an FSM
+* Ways to implement the FSM
+  * Hardwire the FSM design - write the transition table, turn it into logic, etc.
+  * Put the transition table in a special kind of memory
+  * Or change the contents of that meomry 
+
+## Micorprogramming
+* The control is an FSM whose transition table is in a special memory
+* *Microcode - the samell programs that encode the sequence of steps for each instruction*
+  * Microcode is able to reprogram the microcode rom
+* *Firmware - software which serves a very important function and is hard to change*
+* **Microcoded control is flexible but comes at the cost of speed**
+* **Hardwired control is much faster**
+  * Hardwired is faster because it is much smaller and simpler, microprogrammed contorl is bigger and more complex, which makes it slower
+
+# Chater 24 - Pipelining, Caching, Superscalar
+
+## Pipelining
+* Hazards
+  * Structural - two instructions need to use the same hardware at the same time, must both access memory at the same time
+  * Data - An instruction depends on the result of the previous one
+    * For instance, a sub instruction may not be able to use the value of t0 until the beginning of the next cycle as an add instruction writes its result at that step
+    * We can solve this by forwarding the result of add to sub before the add completes
+  * Control - You don't know the outcome of a conditional branch
+
+## Caching
+* A cache is a temporary holding area for recently used data
+  * Memory access references the cache,which is a copy of the data from memory, filled in as needed
+    * Load a variable the first time and a copy of it gets put into cache then intro the register. The value in the register is then modified and only stored into cahce, that way if we access it again, it will load much quicker  
+* Caching exploits temporal and spacial locality
+  * Temporal - variables are used over and over very quickly. Makes sense to access them somewhere fast
+  * Spatial - Items in an array are all next to each other in memory. Cache will pull in several items at a tim
+
+## Superscalar CPUs
+* *scalar CPU  - can finish at most 1 instruction per cycle*
+* *Superscalar CPUs - finishes more than 1 instruction per cycle*
+
